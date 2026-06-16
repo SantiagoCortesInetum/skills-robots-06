@@ -1,14 +1,17 @@
 import { Router } from 'express'
+import User from '../models/User'
 
 const router = Router()
 
-router.get('/', (req, res) => {
-  res.json({ users: [] })
+router.get('/', async (req, res) => {
+  const users = await User.find().lean()
+  res.json({ users })
 })
 
-router.post('/', (req, res) => {
-  // placeholder: create user
-  res.status(201).json({ message: 'User created' })
+router.post('/', async (req, res) => {
+  const data = req.body
+  const created = await User.create(data)
+  res.status(201).json(created)
 })
 
 export default router
